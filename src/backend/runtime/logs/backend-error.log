@@ -1,0 +1,1 @@
+2018/08/04 23:06:40 [error] 4241#0: *1 kevent() reported that connect() failed (61: Connection refused) while connecting to upstream, client: 127.0.0.1, server: , request: "GET / HTTP/1.1", upstream: "fastcgi://127.0.0.1:9000", host: "127.0.0.1:8086"
