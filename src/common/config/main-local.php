@@ -3,10 +3,11 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced',
+            'dsn' => 'mysql:host=192.168.1.114;dbname=myfmapp',
             'username' => 'root',
-            'password' => '',
-            'charset' => 'utf8',
+            'password' => 'abc123_',
+            'charset' => 'utf8mb4',
+            'tablePrefix' => 'myfm_'
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

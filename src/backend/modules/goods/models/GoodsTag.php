@@ -1,7 +1,9 @@
 <?php
-namespace backend\modules\goods\models;;
+namespace backend\modules\goods\models;
 
-class GoodsTag extends BaseModel
+use yii\db\ActiveRecord;
+
+class GoodsTag extends ActiveRecord
 {
     public static function tableName()
     {

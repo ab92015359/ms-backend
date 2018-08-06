@@ -15,6 +15,21 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+                'text/json' => 'yii\web\JsonParser'
+            ]
+        ],
+        'response' => [
+            // ...
+            'formatters' => [
+                \yii\web\Response::FORMAT_JSON => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG, // use "pretty" output in debug mode
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE,
+                    // ...
+                ],
+            ],
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -32,19 +47,52 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\FileTarget',
+                    // 'prefix' => function ($message) {
+                    //     if (Yii::$app === null) {
+                    //         return '';
+                    //     }
+                    //     $request = Yii::$app->getRequest();
+                    //     $userIP = $request ? $request->getUserIP() : '-';
+
+                    //     $user = Yii::$app->get('user');
+                    //     $userID = $user ? $user->getId() : '-';
+
+                    //     $session = Yii::$app->get('session');
+                    //     $sessionID = $session ? $session->getId() : '-';
+                    //     return "[$userIP][$userID][$sessionID]";
+                    // },
+                    'levels' => ['error', 'info', 'warning'],
+                    'categories' => ['myfm'],
+                    'logFile' => '@app/runtime/logs/myfm.log',
+                    'maxFileSize' => 51200,
+                    'logVars' => [],
+                ],
             ],
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'enablePrettyUrl' => true,  // Pretty url==ture
+            'enableStrictParsing' => false,  // disuse strict parsing
+            'showScriptName' => false,   // hide index.php
             'rules' => [
+                'PUT api/<controller:[\w-]+>/<id:[\w\d,]{24}>'                              => '<controller>/update',
+                'DELETE api/<controller:[\w-]+>/<id:[\w\d]{24}(,[\w\d]{24})*>'              => '<controller>/delete',
+                'api/<controller:[\w-]+>/<id:[\w\d,]{24}>'                                  => '<controller>/view',
+
+                'PUT api/<module:\w+>/<controller:[\w-]+>/<id:[\w\d,]{24}>'                 => '<module>/<controller>/update',
+                'DELETE api/<module:\w+>/<controller:[\w-]+>/<id:[\w\d]{24}(,[\w\d]{24})*>' => '<module>/<controller>/delete',
+                'api/<module:\w+>/<controller:[\w-]+>/<id:[\w\d,]{24}>'                     => '<module>/<controller>/view',
+
+                'api/<controller:[\w-]+>/<action:[\w-]+>'                                   => '<controller>/<action>',
+                'api/<module:\w+>/<controller:[\w-]+>/<action:[\w-]+>'                      => '<module>/<controller>/<action>',
+                'api/<controller:[\w-]+>/<action:[\w-]+>/<id:[\w\d,]{24}>'                  => '<controller>/<action>',
+                'api/<module:\w+>/<controller:[\w-]+>/<action:[\w-]+>/<id:[\w\d,]{24}>'     => '<module>/<controller>/<action>',
             ],
-        ],
-        */
+        ]
     ],
     'params' => $params,
 ];
